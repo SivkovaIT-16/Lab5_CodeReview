@@ -8,28 +8,68 @@ import ru.reshetnikova.validation.Validation;
 
 import java.util.Scanner;
 
+/**
+ * Класс, реализующий перезарядку пистолета.
+ * Позволяет заряжать, разряжать и стрелять из пистолета.
+ *
+ * <p>Особенности:</p>
+ * <ul>
+ *   <li>Максимальная вместимость задается при создании и не может быть изменена</li>
+ *   <li>Зарядка учитывает свободное место в магазине</li>
+ *   <li>Лишние патроны возвращаются при перезарядке</li>
+ * </ul>
+ *
+ * @author Решетникова
+ * @version 1.0
+ */
 public class ReloadingTheGun {
   private final int maxCapacity;
   private int currentBullets;
 
+  /**
+   * Конструктор пистолета.
+   *
+   * @param maxCapacity максимальная вместимость магазина
+   */
   public ReloadingTheGun(int maxCapacity) {
     Validation.validateCapacity(maxCapacity);
     this.maxCapacity = maxCapacity;
     this.currentBullets = 0;
   }
 
+  /**
+   * Возвращает максимальную вместимость пистолета.
+   *
+   * @return максимальная вместимость
+   */
   public int getMaxCapacity() {
     return maxCapacity;
   }
 
+  /**
+   * Возвращает текущее количество патронов.
+   *
+   * @return текущее количество патронов
+   */
   public int getCurrentBullets() {
     return currentBullets;
   }
 
+  /**
+   * Проверяет, заряжен ли пистолет.
+   *
+   * @return true если есть хотя бы один патрон
+   */
   public boolean isLoaded() {
     return currentBullets > 0;
   }
 
+  /**
+   * Заряжает указанное количество патронов.
+   *
+   * @param bullets количество патронов для зарядки
+   * @return количество патронов, которые не поместились
+   */
   public int reload(int bullets) {
     Validation.validateBulletCount(bullets);
     int spaceAvailable = maxCapacity - currentBullets;
@@ -38,12 +78,21 @@ public class ReloadingTheGun {
     return bullets - bulletsToAdd;
   }
 
+  /**
+   * Полностью разряжает пистолет.
+   *
+   * @return количество извлеченных патронов
+   */
   public int unload() {
     int unloadedBullets = currentBullets;
     currentBullets = 0;
     return unloadedBullets;
   }
 
+  /**
+   * Выполняет один выстрел.
+   * При наличии патронов выводит "Бах!", иначе "Клац!".
+   */
   public void shoot() {
     if (currentBullets > 0) {
       currentBullets--;
@@ -53,6 +102,11 @@ public class ReloadingTheGun {
     }
   }
 
+  /**
+   * Возвращает строковое представление пистолета.
+   *
+   * @return строка с параметрами пистолета
+   */
   @Override
   public String toString() {
     // FIX_ME: добавлен перенос строки
@@ -60,6 +114,11 @@ public class ReloadingTheGun {
         currentBullets + ", заряжен=" + isLoaded() + ")";
   }
 
+  /**
+   * Демонстрационный метод.
+   * Запрашивает вместимость пистолета и позволяет взаимодействовать с ним
+   * через консольное меню (зарядка, выстрелы, разрядка).
+   */
   public static void demonstrate() {
     Scanner scanner = new Scanner(System.in);
 

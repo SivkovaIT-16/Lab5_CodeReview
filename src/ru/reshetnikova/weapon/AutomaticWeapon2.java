@@ -9,26 +9,60 @@ package ru.reshetnikova.weapon;
 import ru.reshetnikova.validation.Validation;
 
 import java.util.Scanner;
-// Для задачи про стрелков
+
+/**
+ * Класс автоматического оружия, наследующий базовое оружие.
+ * Реализует стрельбу очередью, перезарядку и разрядку.
+ *
+ * <p>Особенности:</p>
+ * <ul>
+ *   <li>Имеет фиксированную максимальную вместимость</li>
+ *   <li>Имеет скорострельность (количество выстрелов за очередь)</li>
+ *   <li>При стрельбе выпускает очередь с учетом оставшихся патронов</li>
+ * </ul>
+ *
+ * @author Решетникова
+ * @version 1.0
+ */
 public class AutomaticWeapon2 extends Weapon {
   private final int maxCapacity;
   private final int fireRate;
 
-  // Конструктор с указанием вместимости и скорострельности
+  /**
+   * Конструктор автоматического оружия.
+   *
+   * @param maxCapacity максимальная вместимость магазина
+   * @param fireRate скорострельность (выстрелов в секунду/очередь)
+   */
   public AutomaticWeapon2(int maxCapacity, int fireRate) {
     super(0); // начинаем с 0 патронов
     this.maxCapacity = maxCapacity;
     this.fireRate = fireRate;
   }
 
+  /**
+   * Возвращает максимальную вместимость.
+   *
+   * @return максимальная вместимость
+   */
   public int getMaxCapacity() {
     return maxCapacity;
   }
 
+  /**
+   * Возвращает скорострельность.
+   *
+   * @return скорострельность
+   */
   public int getFireRate() {
     return fireRate;
   }
 
+  /**
+   * Выполняет стрельбу очередью.
+   * Количество выстрелов в очереди равно скорострельности,
+   * но не может превышать количество оставшихся патронов.
+   */
   @Override
   public void shoot() {
     int actualShots = Math.min(ammo(), fireRate);
@@ -51,6 +85,12 @@ public class AutomaticWeapon2 extends Weapon {
     }
   }
 
+  /**
+   * Заряжает указанное количество патронов.
+   *
+   * @param bullets количество патронов для зарядки
+   * @return количество патронов, которые не поместились
+   */
   public int reload(int bullets) {
     Validation.validateBulletCount(bullets);
     int spaceAvailable = maxCapacity - ammo();
@@ -62,13 +102,23 @@ public class AutomaticWeapon2 extends Weapon {
 
     return bullets - bulletsToAdd;
   }
-  // Метод для разрядки
+
+  /**
+   * Полностью разряжает оружие.
+   *
+   * @return количество извлеченных патронов
+   */
   public int unload() {
     int unloadedBullets = ammo();
     load(0); // Устанавливаем количество патронов в 0
     return unloadedBullets;
   }
 
+  /**
+   * Возвращает строковое представление автомата.
+   *
+   * @return строка с параметрами оружия
+   */
   @Override
   public String toString() {
     return "Автомат (вместимость=" + maxCapacity +
@@ -76,7 +126,10 @@ public class AutomaticWeapon2 extends Weapon {
         ", скорострельность=" + fireRate + " в/с)";
   }
 
-  // Упрощенный демонстрационный метод
+  /**
+   * Демонстрационный метод.
+   * Запрашивает параметры автомата, создает его и демонстрирует зарядку и стрельбу.
+   */
   public static void demonstrate() {
     Scanner scanner = new Scanner(System.in);
 

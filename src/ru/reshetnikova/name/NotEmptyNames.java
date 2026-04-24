@@ -8,6 +8,14 @@ import ru.reshetnikova.validation.Validation;
 
 import java.util.Scanner;
 
+/**
+ * Класс для представления человека с проверкой на непустые имена.
+ * Поддерживает создание объекта с именем, фамилией и отчеством.
+ * В случае некорректного ввода используются значения по умолчанию.
+ *
+ * @author Решетникова
+ * @version 1.0
+ */
 public class NotEmptyNames {
   // FIX_ME: имена полей переименованы, должны начинаться с меленькой буквы
   //private final String FirstName;
@@ -17,6 +25,11 @@ public class NotEmptyNames {
   private final String lastName;
   private final String patronymic;
 
+  /**
+   * Конструктор для создания человека только с именем.
+   *
+   * @param firstName имя человека
+   */
   public NotEmptyNames(String firstName) {
     String validatedFirstName;
     try {
@@ -31,6 +44,12 @@ public class NotEmptyNames {
     this.patronymic = null;
   }
 
+  /**
+   * Конструктор для создания человека с фамилией и именем.
+   *
+   * @param lastName  фамилия человека
+   * @param firstName имя человека
+   */
   public NotEmptyNames(String lastName, String firstName) {
     String validatedFirstName;
     String validatedLastName;
@@ -63,6 +82,13 @@ public class NotEmptyNames {
     this.patronymic = null;
   }
 
+  /**
+   * Конструктор для создания человека с полным ФИО.
+   *
+   * @param lastName    фамилия человека
+   * @param firstName   имя человека
+   * @param patronymic  отчество человека
+   */
   public NotEmptyNames(String lastName, String firstName, String patronymic) {
     String validatedFirstName;
     String validatedLastName;
@@ -103,10 +129,32 @@ public class NotEmptyNames {
     this.patronymic = validatedPatronymic;
   }
 
+  /**
+   * Возвращает имя человека.
+   *
+   * @return имя
+   */
   public String getFirstName() { return firstName; }
+
+  /**
+   * Возвращает фамилию человека.
+   *
+   * @return фамилия (может быть null)
+   */
   public String getLastName() { return lastName; }
+
+  /**
+   * Возвращает отчество человека.
+   *
+   * @return отчество (может быть null)
+   */
   public String getPatronymic() { return patronymic; }
 
+  /**
+   * Возвращает строковое представление ФИО.
+   *
+   * @return ФИО в формате "Фамилия Имя Отчество"
+   */
   @Override
   public String toString() {
     StringBuilder result = new StringBuilder();
@@ -122,7 +170,10 @@ public class NotEmptyNames {
     return result.toString();
   }
 
-  // Демонстрация с вводом с клавиатуры
+  /**
+   * Демонстрационный метод. Запрашивает у пользователя ввод ФИО
+   * и выводит результаты создания объектов с обработкой ошибок.
+   */
   public static void demonstrate() {
     Scanner scanner = new Scanner(System.in);
 

@@ -13,7 +13,19 @@ import ru.reshetnikova.power.PowerCalculator;
 import ru.reshetnikova.weapon.Gun8;
 
 import java.util.Scanner;
+/**
+ * Консольное меню для запуска учебных задач.
+ * Выберите номер задачи (1-11) для демонстрации или 0 для выхода.
+ *
+ * @author Решетникова
+ * @version 1.0
+ */
 public class Main {
+  /**
+   * Точка входа. Запускает интерактивное меню.
+   *
+   * @param args аргументы командной строки (не используются)
+   */
   public static void main(String[] args) {
     Scanner scanner = new Scanner(System.in);
 

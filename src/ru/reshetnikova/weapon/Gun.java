@@ -10,19 +10,48 @@ import ru.reshetnikova.validation.Validation;
 
 import java.util.Scanner;
 
+/**
+ * Класс пистолета, наследующий базовое оружие.
+ * Реализует стрельбу, перезарядку и разрядку.
+ *
+ * <p>Особенности:</p>
+ * <ul>
+ *   <li>Имеет фиксированную максимальную вместимость</li>
+ *   <li>Использует методы родительского класса для работы с патронами</li>
+ *   <li>Переопределяет метод shoot() для имитации выстрела</li>
+ * </ul>
+ *
+ * @author Решетникова
+ * @version 1.0
+ */
 public class Gun extends Weapon {
   private final int maxCapacity;
 
+  /**
+   * Конструктор пистолета.
+   *
+   * @param maxCapacity максимальная вместимость магазина
+   */
   public Gun(int maxCapacity) {
     super(0); // Начинаем с 0 патронов
     Validation.validateCapacity(maxCapacity);
     this.maxCapacity = maxCapacity;
   }
 
+  /**
+   * Возвращает максимальную вместимость пистолета.
+   *
+   * @return максимальная вместимость
+   */
   public int getMaxCapacity() {
     return maxCapacity;
   }
 
+  /**
+   * Выполняет один выстрел.
+   * При наличии патронов расходует один и выводит "Бах!",
+   * иначе выводит "Клац!".
+   */
   @Override
   public void shoot() {
     if (ammo() > 0) {
@@ -34,6 +63,12 @@ public class Gun extends Weapon {
     }
   }
 
+  /**
+   * Заряжает указанное количество патронов.
+   *
+   * @param bullets количество патронов для зарядки
+   * @return количество патронов, которые не поместились
+   */
   public int reload(int bullets) {
     Validation.validateBulletCount(bullets);
     int spaceAvailable = maxCapacity - ammo();
@@ -46,21 +81,40 @@ public class Gun extends Weapon {
     return bullets - bulletsToAdd;
   }
 
+  /**
+   * Полностью разряжает пистолет.
+   *
+   * @return количество извлеченных патронов
+   */
   public int unload() {
     int unloadedBullets = ammo();
     load(0); // Устанавливаем количество патронов в 0
     return unloadedBullets;
   }
 
-  // Методы для совместимости с существующим кодом
+  /**
+   * Возвращает текущее количество патронов.
+   *
+   * @return текущее количество патронов
+   */
   public int getCurrentBullets() {
     return ammo();
   }
 
+  /**
+   * Проверяет, заряжен ли пистолет.
+   *
+   * @return true если есть хотя бы один патрон
+   */
   public boolean isLoaded() {
     return ammo() > 0;
   }
 
+  /**
+   * Возвращает строковое представление пистолета.
+   *
+   * @return строка с параметрами пистолета
+   */
   @Override
   public String toString() {
     // FIX_ME: добавлен перенос строки
@@ -68,6 +122,11 @@ public class Gun extends Weapon {
         ", заряжен=" + isLoaded() + ")";
   }
 
+  /**
+   * Демонстрационный метод.
+   * Запрашивает вместимость пистолета и позволяет взаимодействовать с ним
+   * через консольное меню (зарядка, выстрелы, разрядка).
+   */
   public static void demonstrate() {
     Scanner scanner = new Scanner(System.in);
 

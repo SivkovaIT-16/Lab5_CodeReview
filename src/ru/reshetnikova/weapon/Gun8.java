@@ -10,19 +10,48 @@ import ru.reshetnikova.validation.Validation;
 
 import java.util.Scanner;
 
+/**
+ * Класс пистолета, наследующий базовое оружие.
+ * Реализует стрельбу, перезарядку и разрядку.
+ *
+ * <p>Особенности:</p>
+ * <ul>
+ *   <li>Имеет фиксированную максимальную вместимость</li>
+ *   <li>Наследует поле ammo от класса Weapon8</li>
+ *   <li>Переопределяет метод shoot() для имитации выстрела</li>
+ * </ul>
+ *
+ * @author Решетникова
+ * @version 1.0
+ */
 public class Gun8 extends Weapon8 {
   private final int maxCapacity;
 
+  /**
+   * Конструктор пистолета.
+   *
+   * @param maxCapacity максимальная вместимость магазина
+   */
   public Gun8(int maxCapacity) {
     super(0); // Начинаем с 0 патронов
     Validation.validateCapacity(maxCapacity);
     this.maxCapacity = maxCapacity;
   }
 
+  /**
+   * Возвращает максимальную вместимость пистолета.
+   *
+   * @return максимальная вместимость
+   */
   public int getMaxCapacity() {
     return maxCapacity;
   }
 
+  /**
+   * Выполняет один выстрел.
+   * При наличии патронов уменьшает их количество и выводит "Бах!",
+   * иначе выводит "Клац!".
+   */
   @Override
   public void shoot() {
     if (ammo > 0) {
@@ -33,6 +62,12 @@ public class Gun8 extends Weapon8 {
     }
   }
 
+  /**
+   * Заряжает указанное количество патронов.
+   *
+   * @param bullets количество патронов для зарядки
+   * @return количество патронов, которые не поместились
+   */
   public int reload(int bullets) {
     Validation.validateBulletCount(bullets);
     int spaceAvailable = maxCapacity - ammo; // Прямой доступ к ammo
@@ -43,22 +78,40 @@ public class Gun8 extends Weapon8 {
     return bullets - bulletsToAdd;
   }
 
-  // Упрощенный метод разрядки
+  /**
+   * Полностью разряжает пистолет.
+   *
+   * @return количество извлеченных патронов
+   */
   public int unload() {
     int unloadedBullets = ammo; // Прямой доступ к ammo
     ammo = 0; // Прямой доступ к ammo
     return unloadedBullets;
   }
 
-  // Методы для совместимости с существующим кодом
+  /**
+   * Возвращает текущее количество патронов.
+   *
+   * @return текущее количество патронов
+   */
   public int getCurrentBullets() {
     return ammo; // Прямой доступ к ammo
   }
 
+  /**
+   * Проверяет, заряжен ли пистолет.
+   *
+   * @return true если есть хотя бы один патрон
+   */
   public boolean isLoaded() {
     return ammo > 0; // Прямой доступ к ammo
   }
 
+  /**
+   * Возвращает строковое представление пистолета.
+   *
+   * @return строка с параметрами пистолета
+   */
   @Override
   public String toString() {
     // FIX_ME: добавлен перенос строки
@@ -66,6 +119,11 @@ public class Gun8 extends Weapon8 {
         ", заряжен=" + isLoaded() + ")";
   }
 
+  /**
+   * Демонстрационный метод.
+   * Запрашивает вместимость пистолета и позволяет взаимодействовать с ним
+   * через консольное меню (зарядка, выстрелы, разрядка).
+   */
   public static void demonstrate() {
     Scanner scanner = new Scanner(System.in);
 

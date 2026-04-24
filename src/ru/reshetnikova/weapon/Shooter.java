@@ -10,40 +10,86 @@ import ru.reshetnikova.validation.Validation;
 
 import java.util.Scanner;
 
+/**
+ * Класс, представляющий стрелка, который может владеть оружием и стрелять.
+ *
+ * <p>Особенности:</p>
+ * <ul>
+ *   <li>Каждый стрелок имеет имя (обязательное поле)</li>
+ *   <li>Стрелок может иметь оружие или быть безоружным</li>
+ *   <li>При выстреле делегирует действие своему оружию</li>
+ * </ul>
+ *
+ * @author Решетникова
+ * @version 1.0
+ */
 public class Shooter {
   private String name;
   private Weapon weapon;
 
+  /**
+   * Конструктор стрелка без оружия.
+   *
+   * @param name имя стрелка
+   */
   public Shooter(String name) {
     Validation.validateName(name);
     this.name = name.trim();
   }
 
+  /**
+   * Конструктор стрелка с оружием.
+   *
+   * @param name имя стрелка
+   * @param weapon оружие стрелка
+   */
   public Shooter(String name, Weapon weapon) {
     Validation.validateName(name);
     this.name = name.trim();
     this.weapon = weapon;
   }
 
-  // Геттеры и сеттеры
+  /**
+   * Возвращает имя стрелка.
+   *
+   * @return имя стрелка
+   */
   public String getName() {
     return name;
   }
 
+  /**
+   * Устанавливает имя стрелка.
+   *
+   * @param name новое имя
+   */
   public void setName(String name) {
     Validation.validateName(name);
     this.name = name.trim();
   }
 
+  /**
+   * Возвращает оружие стрелка.
+   *
+   * @return оружие или null, если стрелок безоружен
+   */
   public Weapon getWeapon() {
     return weapon;
   }
 
+  /**
+   * Устанавливает оружие стрелка.
+   *
+   * @param weapon новое оружие
+   */
   public void setWeapon(Weapon weapon) {
     this.weapon = weapon;
   }
 
-  // Основной метод - стрельба
+  /**
+   * Выполняет выстрел из оружия.
+   * Если оружие отсутствует, выводит сообщение об ошибке.
+   */
   public void shoot() {
     if (weapon != null) {
       weapon.shoot();
@@ -52,6 +98,11 @@ public class Shooter {
     }
   }
 
+  /**
+   * Возвращает строковое представление стрелка.
+   *
+   * @return строка с именем и информацией об оружии
+   */
   @Override
   public String toString() {
     if (weapon == null) {
@@ -61,7 +112,14 @@ public class Shooter {
     }
   }
 
-  // Вспомогательный метод для безопасного ввода чисел
+  /**
+   * Вспомогательный метод для безопасного ввода целых чисел.
+   *
+   * @param scanner объект Scanner для ввода
+   * @param prompt приглашение для ввода
+   * @param fieldName название поля для сообщения об ошибке
+   * @return валидное целое число
+   */
   private static int getValidatedIntInput(Scanner scanner, String prompt, String fieldName) {
     while (true) {
       System.out.print(prompt);
@@ -74,7 +132,11 @@ public class Shooter {
     }
   }
 
-  // Демонстрационный метод с вводом с клавиатуры
+  /**
+   * Демонстрационный метод.
+   * Создает трех стрелков с возможностью выбора оружия,
+   * затем проводит перестрелку и позволяет выполнять дополнительные действия.
+   */
   public static void demonstrate() {
     Scanner scanner = new Scanner(System.in);
     Shooter[] shooters = new Shooter[3];

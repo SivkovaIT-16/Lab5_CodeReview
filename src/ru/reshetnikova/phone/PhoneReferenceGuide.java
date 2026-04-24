@@ -13,6 +13,21 @@ import java.util.Map;
 import java.util.Scanner;
 import java.util.ArrayList;
 
+/**
+ * Класс телефонного справочника, обеспечивающий двустороннее отображение
+ * между именами контактов и номерами телефонов.
+ *
+ * <p>Особенности реализации:</p>
+ * <ul>
+ *   <li>Каждому имени соответствует один телефон</li>
+ *   <li>Телефоны уникальны и не могут принадлежать разным контактам</li>
+ *   <li>Поддерживается поиск как по имени, так и по телефону</li>
+ *   <li>Валидация входных данных выполняется через класс Validation</li>
+ * </ul>
+ *
+ * @author Решетникова
+ * @version 1.0
+ */
 public class PhoneReferenceGuide {
   // FIX_ME: имена полей переименованы, должны начинаться с меленькой буквы
   //private Map<String, String> Contacts;
@@ -20,12 +35,23 @@ public class PhoneReferenceGuide {
   private Map<String, String> contacts; // Имя - телефон
   private Map<String, String> phoneToName; // Телефон - имя (для быстрой проверки уникальности)
 
+  /**
+   * Конструктор по умолчанию.
+   * Инициализирует пустые HashMap для хранения контактов.
+   */
   public PhoneReferenceGuide() {
     this.contacts = new HashMap<>();
     this.phoneToName = new HashMap<>();
   }
 
-  // Добавление новой пары "телефон – имя"
+  /**
+   * Добавляет новый контакт или обновляет телефон существующего.
+   *
+   * @param phone номер телефона
+   * @param name имя контакта
+   * @return предыдущий номер телефона, если имя уже существовало, иначе null
+   * @throws InvalidPhoneException если телефон уже принадлежит другому контакту
+   */
   public String addContact(String phone, String name) {
     Validation.validatePhone(phone);
     Validation.validateContactName(name);
@@ -52,7 +78,12 @@ public class PhoneReferenceGuide {
     return oldPhone; // Возвращает старый телефон или null если не было
   }
 
-  // Удаление значения по имени
+  /**
+   * Удаляет контакт по имени.
+   *
+   * @param name имя контакта для удаления
+   * @return номер телефона удаленного контакта, или null если контакт не найден
+   */
   public String removeContact(String name) {
     Validation.validateContactName(name);
     String cleanName = name.trim();
@@ -64,36 +95,64 @@ public class PhoneReferenceGuide {
     return phone; // Возвращает телефон удаленного контакта или null
   }
 
-  // Получение телефона по имени
+  /**
+   * Возвращает номер телефона по имени контакта.
+   *
+   * @param name имя контакта
+   * @return номер телефона или null, если контакт не найден
+   */
   public String getPhone(String name) {
     Validation.validateContactName(name);
     return contacts.get(name.trim());
   }
 
-  // Получение имени по телефону
+  /**
+   * Возвращает имя контакта по номеру телефона.
+   *
+   * @param phone номер телефона
+   * @return имя контакта или null, если телефон не найден
+   */
   public String getNameByPhone(String phone) {
     Validation.validatePhone(phone);
     return phoneToName.get(phone.trim());
   }
 
-  // Проверка наличия телефона
+  /**
+   * Проверяет наличие телефона в справочнике.
+   *
+   * @param phone номер телефона
+   * @return true если телефон существует, иначе false
+   */
   public boolean containsPhone(String phone) {
     Validation.validatePhone(phone);
     return phoneToName.containsKey(phone.trim());
   }
 
-  // Проверка наличия имени
+  /**
+   * Проверяет наличие имени в справочнике.
+   *
+   * @param name имя контакта
+   * @return true если имя существует, иначе false
+   */
   public boolean containsName(String name) {
     Validation.validateContactName(name);
     return contacts.containsKey(name.trim());
   }
 
-  // Получение количества контактов
+  /**
+   * Возвращает общее количество контактов в справочнике.
+   *
+   * @return количество контактов
+   */
   public int getContactCount() {
     return contacts.size();
   }
 
-  // Получение всех пар
+  /**
+   * Возвращает все пары (имя, телефон) в виде двумерного массива.
+   *
+   * @return массив размером [n][2], где n - количество контактов
+   */
   public String[][] getAllPairs() {
     String[][] pairs = new String[contacts.size()][2];
     int i = 0;
@@ -105,17 +164,30 @@ public class PhoneReferenceGuide {
     return pairs;
   }
 
-  // Получение всех телефонов
+  /**
+   * Возвращает массив всех телефонных номеров.
+   *
+   * @return массив телефонов
+   */
   public String[] getAllPhones() {
     return contacts.values().toArray(new String[0]);
   }
 
-  // Получение всех имен
+  /**
+   * Возвращает массив всех имен контактов.
+   *
+   * @return массив имен
+   */
   public String[] getAllNames() {
     return contacts.keySet().toArray(new String[0]);
   }
 
-  // Получение имен по началу названия
+  /**
+   * Возвращает имена контактов, начинающиеся с указанного префикса.
+   *
+   * @param prefix префикс для поиска (регистронезависимый)
+   * @return массив имен, соответствующих префиксу
+   */
   public String[] getNamesByPrefix(String prefix) {
     if (prefix == null) {
       prefix = "";
@@ -131,6 +203,11 @@ public class PhoneReferenceGuide {
     return result.toArray(new String[0]);
   }
 
+  /**
+   * Возвращает строковое представление справочника.
+   *
+   * @return отформатированный список контактов или сообщение о пустоте
+   */
   @Override
   public String toString() {
     if (contacts.isEmpty()) {
@@ -144,6 +221,10 @@ public class PhoneReferenceGuide {
     return sb.toString();
   }
 
+  /**
+   * Демонстрационный метод. Запускает интерактивное консольное меню
+   * для тестирования функциональности телефонного справочника.
+   */
   public static void demonstrate() {
     Scanner scanner = new Scanner(System.in);
     PhoneReferenceGuide phoneBook = new PhoneReferenceGuide();

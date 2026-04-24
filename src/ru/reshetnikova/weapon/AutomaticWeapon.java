@@ -9,23 +9,50 @@ import ru.reshetnikova.validation.Validation;
 
 import java.util.Scanner;
 
+/**
+ * Класс автоматического оружия, наследующий функциональность пистолета.
+ * Расширяет возможности базового класса за счет скорострельности.
+ *
+ * <p>Особенности:</p>
+ * <ul>
+ *   <li>Может стрелять очередью за один раз</li>
+ *   <li>Поддерживает стрельбу в течение заданного количества секунд</li>
+ *   <li>Имеет несколько конструкторов для разных сценариев создания</li>
+ * </ul>
+ *
+ * @author Решетникова
+ * @version 1.0
+ */
 public class AutomaticWeapon extends ReloadingTheGun {
   private final int fireRate; // скорострельность (выстрелов в секунду)
 
-  // Конструктор без параметров - скорострельность 30, вместимость 30
+  /**
+   * Конструктор по умолчанию.
+   * Создает автомат с вместимостью 30 и скорострельностью 30.
+   */
   public AutomaticWeapon() {
     super(30);
     this.fireRate = 30;
   }
 
-  // Конструктор с указанием максимального числа патронов
+  /**
+   * Конструктор с указанием максимальной вместимости.
+   * Скорострельность устанавливается как половина вместимости.
+   *
+   * @param maxCapacity максимальная вместимость магазина
+   */
   public AutomaticWeapon(int maxCapacity) {
     super(maxCapacity);
     Validation.validateCapacity(maxCapacity);
     this.fireRate = maxCapacity / 2;
   }
 
-  // Конструктор с указанием вместимости и скорострельности
+  /**
+   * Конструктор с указанием вместимости и скорострельности.
+   *
+   * @param maxCapacity максимальная вместимость магазина
+   * @param fireRate скорострельность (выстрелов в секунду/очередь)
+   */
   public AutomaticWeapon(int maxCapacity, int fireRate) {
     super(maxCapacity);
     Validation.validateCapacity(maxCapacity);
@@ -33,18 +60,31 @@ public class AutomaticWeapon extends ReloadingTheGun {
     this.fireRate = fireRate;
   }
 
-  // Проверка скорострельности
+  /**
+   * Проверяет корректность скорострельности.
+   *
+   * @param fireRate проверяемая скорострельность
+   * @throws InvalidNumberException если скорострельность <= 0
+   */
   private void validateFireRate(int fireRate) {
     if (fireRate <= 0) {
       throw new InvalidNumberException("Скорострельность должна быть положительной");
     }
   }
 
+  /**
+   * Возвращает скорострельность.
+   *
+   * @return скорострельность
+   */
   public int getFireRate() {
     return fireRate;
   }
 
-  // Переопределение метода shoot() - выстреливает количество раз, равное скорострельности
+  /**
+   * Выполняет стрельбу очередью.
+   * Количество выстрелов равно скорострельности, но не более текущего количества патронов.
+   */
   @Override
   public void shoot() {
     int shotsToFire = Math.min(getCurrentBullets(), fireRate);
@@ -59,7 +99,12 @@ public class AutomaticWeapon extends ReloadingTheGun {
     }
   }
 
-  // Стрельба N секунд
+  /**
+   * Выполняет стрельбу в течение заданного количества секунд.
+   *
+   * @param seconds количество секунд стрельбы
+   * @throws InvalidNumberException если количество секунд <= 0
+   */
   public void shootForSeconds(int seconds) {
     Validation.validateBulletCount(seconds);
     if (seconds <= 0) {
@@ -87,6 +132,11 @@ public class AutomaticWeapon extends ReloadingTheGun {
     }
   }
 
+  /**
+   * Возвращает строковое представление автомата.
+   *
+   * @return строка с параметрами оружия
+   */
   @Override
   public String toString() {
     return "Автомат (вместимость=" + getMaxCapacity() +
@@ -95,6 +145,10 @@ public class AutomaticWeapon extends ReloadingTheGun {
         ", скорострельность=" + fireRate + " в/с)";
   }
 
+  /**
+   * Демонстрационный метод.
+   * Позволяет создать автомат разными способами и управлять им.
+   */
   public static void demonstrate() {
     Scanner scanner = new Scanner(System.in);
 
@@ -156,6 +210,12 @@ public class AutomaticWeapon extends ReloadingTheGun {
     }
   }
 
+  /**
+   * Вспомогательный метод для управления созданным автоматом.
+   *
+   * @param weapon объект автомата
+   * @param scanner объект Scanner для ввода
+   */
   private static void manageWeapon(AutomaticWeapon weapon, Scanner scanner) {
     while (true) {
       System.out.println("\nУПРАВЛЕНИЕ АВТОМАТОМ");
